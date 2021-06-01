@@ -35,6 +35,7 @@ export class GameComponent implements OnInit {
 
   ngAfterViewInit() {
     this.fillPlayfield();
+    this.startTimer();
   }
 
   @ViewChild('playfield') playfield: ElementRef;
@@ -42,6 +43,19 @@ export class GameComponent implements OnInit {
   firstPick: HTMLElement = undefined;
   secondPick: HTMLElement = undefined;
   winCondition: boolean = false;
+  totalSeconds: number = 0;
+  time: string = "0 : 0 : 0";
+  interval;
+
+  startTimer() {
+    this.interval = setInterval(() => {
+      this.totalSeconds++;
+      let seconds = this.totalSeconds % 60;
+      let minutes = Math.floor(this.totalSeconds / 60) % 60;
+      let hours = Math.floor(Math.floor(this.totalSeconds / 60) / 60);
+      this.time = hours + " : " + minutes + " : " + seconds;
+    }, 1000)
+  }
 
   swap(id: string) {
     if(!this.winCondition) {
@@ -80,6 +94,7 @@ export class GameComponent implements OnInit {
 
   stopGame(): void {
     this.winCondition = true;
+    clearInterval(this.interval);
     // getElementsByClassName returns HTMLCollectionOf<Element> and Element doesn't have property style, so typecast is needed
     let cardArray: HTMLCollectionOf<HTMLElement> = document.getElementsByClassName("card")! as HTMLCollectionOf<HTMLElement>;
     for(let i: number = 0; i < 9; ++i) {
@@ -117,6 +132,7 @@ export class GameComponent implements OnInit {
     }
   }
 
+  /*
   insertHighscore(form: NgForm) {
     form.value["token"] = this.token;
     this.http.post<{ message: string }>('http://localhost:4201/highscore', form.value, this.httpOptions)
@@ -140,6 +156,7 @@ export class GameComponent implements OnInit {
       this.router.navigate(['/']);
     });
   }
+  */
 
 }
 
