@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, NgForm, NgModel, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private authorization: AuthorizationService) { }
 
   ngOnInit(): void {
   }
@@ -49,7 +50,8 @@ export class LoginComponent implements OnInit {
     else {
       this.http.post<{ message: string, token: string }>('http://localhost:4201/login', form.value, this.httpOptions)
       .subscribe((responseData) => {
-        this.router.navigate(['/game'], { state: { token: responseData.token }});
+        this.authorization.authorize(responseData.token);
+        this.router.navigate(['/game']);
       });
     }
   }

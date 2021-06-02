@@ -8,6 +8,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './logout/logout.component';
+import { GameComponent } from './game/game.component';
+import { HighscoresComponent } from './highscores/highscores.component';
+import { FaqComponent } from './faq/faq.component';
+import { ProfileComponent } from './profile/profile.component';
 
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatBadgeModule} from '@angular/material/badge';
@@ -43,8 +48,6 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
-import { GameComponent } from './game/game.component';
-import { HighscoresComponent } from './highscores/highscores.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,10 @@ import { HighscoresComponent } from './highscores/highscores.component';
     SignupComponent,
     LoginComponent,
     GameComponent,
-    HighscoresComponent
+    HighscoresComponent,
+    FaqComponent,
+    ProfileComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

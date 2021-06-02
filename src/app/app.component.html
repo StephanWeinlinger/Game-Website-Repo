@@ -1,7 +1,11 @@
 <button mat-button [matMenuTriggerFor]="menu"><h1>{{title}}</h1></button>
-<mat-menu #menu="matMenu">
+<mat-menu #menu="matMenu" #navbar>
     <a routerLink=""><button mat-menu-item>Home</button></a>
-    <a routerLink="/login"><button mat-menu-item>Sign In</button></a>
-    <a routerLink="/signup"><button mat-menu-item>Sign Up</button></a>
+    <a routerLink="/login" *ngIf="!isAuthorized"><button mat-menu-item>Login</button></a>
+    <a routerLink="/signup" *ngIf="!isAuthorized"><button mat-menu-item>Sign Up</button></a>
+    <a routerLink="/highscores"><button mat-menu-item>Highscores</button></a>
+    <a routerLink="/faq"><button mat-menu-item>FAQ</button></a>
+    <a routerLink="/profile" *ngIf="isAuthorized"><button mat-menu-item>Profile</button></a>
+    <a routerLink="/logout" *ngIf="isAuthorized"><button mat-menu-item>Logout</button></a>
 </mat-menu>
 <router-outlet></router-outlet>

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, ElementRef, OnInit, AfterViewInit, Renderer2, ViewChild, ComponentRef } from '@angular/core';
 import { FormControl, NgForm, NgModel, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthorizationService } from '../authorization.service';
 
 function swap(id: string) {
   console.log("test");
@@ -14,13 +15,7 @@ function swap(id: string) {
 })
 export class GameComponent implements OnInit {
 
-  constructor(private http: HttpClient, private router: Router, private renderer: Renderer2) {
-    if((typeof this.router.getCurrentNavigation().extras.state) != "undefined") {
-      this.token = this.router.getCurrentNavigation().extras.state.token;
-    }
-    else {
-      //this.router.navigate(['/']); // DONT FORGET
-    }
+  constructor(private http: HttpClient, private router: Router, private renderer: Renderer2, private authorization: AuthorizationService) {
   }
 
   httpOptions = {
@@ -100,6 +95,9 @@ export class GameComponent implements OnInit {
     for(let i: number = 0; i < 9; ++i) {
       cardArray[i].style.borderColor = "black";
     }
+    if(this.authorization.isAuthorized) {
+      //insertHighscore();
+    }
   }
 
   changeBorder(card: HTMLElement, color: string) {
@@ -132,7 +130,6 @@ export class GameComponent implements OnInit {
     }
   }
 
-  /*
   insertHighscore(form: NgForm) {
     form.value["token"] = this.token;
     this.http.post<{ message: string }>('http://localhost:4201/highscore', form.value, this.httpOptions)
@@ -140,7 +137,7 @@ export class GameComponent implements OnInit {
       console.log(responseData.message);
     });
   }
-
+  /*
   showHighscores() {
     this.httpOptions.params = this.httpOptions.params.append('token', this.token);
     this.http.get<{ highscores: object }>('http://localhost:4201/highscore', this.httpOptions)
