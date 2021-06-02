@@ -1,4 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,7 +10,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+  constructor(private http: HttpClient, private router: Router, private authorization: AuthorizationService) {
+    if(this.authorization.isAuthorized) {
+      this.http.post<{ username: string, score: string | number }>('http://localhost:4201/profile', { token: this.authorization.token }, this.httpOptions)
+      .subscribe((responseData) => {
+        this.username = responseData.username;
+        this.score =responseData.score;
+      });
+    }
+    else {
+      this.router.navigate(['/home']);
+    }
+  }
+
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
+  username: string = "";
+  score: string | number = "";
 
   ngOnInit(): void {
   }

@@ -65,10 +65,9 @@ export class SignupComponent implements OnInit {
       alert('SignUp failed!');
     }
     else {
-      this.http.post<{ message: string, token: string }>('http://localhost:4201/signup', form.value, this.httpOptions)
+      this.http.post<{ message: string }>('http://localhost:4201/signup', form.value, this.httpOptions)
           .subscribe((responseData) => {
             console.log(responseData.message);
-            console.log(responseData.token); // binding to variable is also possible
           });
     }
   }

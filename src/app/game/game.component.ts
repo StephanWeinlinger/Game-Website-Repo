@@ -19,11 +19,8 @@ export class GameComponent implements OnInit {
   }
 
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    params: new HttpParams()
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-
-  token: string = "";
 
   ngOnInit(): void {
   }
@@ -96,7 +93,7 @@ export class GameComponent implements OnInit {
       cardArray[i].style.borderColor = "black";
     }
     if(this.authorization.isAuthorized) {
-      //insertHighscore();
+      this.insertHighscore();
     }
   }
 
@@ -130,31 +127,13 @@ export class GameComponent implements OnInit {
     }
   }
 
-  insertHighscore(form: NgForm) {
-    form.value["token"] = this.token;
-    this.http.post<{ message: string }>('http://localhost:4201/highscore', form.value, this.httpOptions)
+  insertHighscore() {
+    let score: number = this.totalSeconds < 100 ? 100 - this.totalSeconds : 0;
+    this.http.post<{ message: string }>('http://localhost:4201/highscore', { score: score, token: this.authorization.token }, this.httpOptions)
     .subscribe((responseData) => {
       console.log(responseData.message);
     });
   }
-  /*
-  showHighscores() {
-    this.httpOptions.params = this.httpOptions.params.append('token', this.token);
-    this.http.get<{ highscores: object }>('http://localhost:4201/highscore', this.httpOptions)
-    .subscribe((responseData) => {
-      this.router.navigate(['/highscores'], { state: { token: this.token, highscores: responseData.highscores }});
-    });
-  }
-
-  logout() {
-    this.http.post<{ message: string }>('http://localhost:4201/logout', { token: this.token }, this.httpOptions)
-    .subscribe((responseData) => {
-      console.log(responseData.message);
-      this.router.navigate(['/']);
-    });
-  }
-  */
-
 }
 
 

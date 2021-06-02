@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
   selector: 'app-logout',
@@ -7,7 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private authorization: AuthorizationService) {
+    if(this.authorization.isAuthorized) {
+      this.authorization.unauthorize();
+      this.router.navigate(['/home']);
+    }
+    else {
+      this.router.navigate(['/home']);
+    }
+  }
 
   ngOnInit(): void {
   }

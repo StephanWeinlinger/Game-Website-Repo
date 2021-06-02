@@ -22,19 +22,10 @@ var db = {
     signup: function(username, password) {
         let user = this.users.find(u => u.username === username);
         if(user !== undefined) {
-            return "";
+            return false;
         }
-
         this.users.push({ username: username, password: passwordHash.generate(password)});
-
-        // SignUp Token doesn't really make sense, but it's asked for
-        let credentials = {
-            token: randomToken(64),
-            username: username
-        }
-        
-        this.tokens.push(credentials);
-        return credentials.token;
+        return true;
     },
 
     login: function(username, password) {
@@ -66,6 +57,10 @@ var db = {
 
     getHighscores: function() {
         return this.highscores.sort(function(a,b) { return b.score - a.score });
+    },
+
+    getHighestScore: function(username) {
+        return this.highscores.find(entry => entry.username == username);
     },
 
     addHighscore: function(username, score) {

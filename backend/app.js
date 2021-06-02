@@ -29,11 +29,9 @@ app.post('/login', (req, res, next) => {
 // POST route for signup
 app.post('/signup', (req, res, next) => {
     const { email, password } = req.body;
-    let token = db.signup(email, password);
-    if(token != "") {
+    if(db.signup(email, password)) {
         res.status(200).json({
-            message: "SignUp worked!",
-            token: token
+            message: "SignUp worked!"
         })
     }
     else {
@@ -42,9 +40,10 @@ app.post('/signup', (req, res, next) => {
 })
 
 app.post('/highscore', (req, res, next) => {
-    const { email, score, token } = req.body;
+    const { score, token } = req.body;
     if(db.isAuthenticated(token)) {
-        db.addHighscore(email, score);
+        const { username } = db.getAuthUser(token);
+        db.addHighscore(username, score);
         res.status(200).json({
             message: "Highscore inserted!"
         });
@@ -55,12 +54,25 @@ app.post('/highscore', (req, res, next) => {
 })
 
 app.get('/highscore', (req, res, next) => {
-    const { token } = req.query; // not params!
+    let highscores = db.getHighscores();
+    res.status(200).json({
+        highscores: highscores
+    });
+})
+
+app.post('/profile', (req, res, next) => {
+    const { token } = req.body;
     if(db.isAuthenticated(token)) {
-        let highscores = db.getHighscores();
+        const { username } = db.getAuthUser(token);
+        const scoreObject = db.getHighestScore(username);
+        let score = "Not available!"
+        if(scoreObject != undefined) {
+            score = scoreObject.score;
+        }
         res.status(200).json({
-            highscores: highscores
-        });
+            username: username,
+            score: score
+        })
     }
     else {
         res.status(401).json({});

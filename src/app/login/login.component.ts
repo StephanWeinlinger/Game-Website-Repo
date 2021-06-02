@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
       this.http.post<{ message: string, token: string }>('http://localhost:4201/login', form.value, this.httpOptions)
       .subscribe((responseData) => {
         this.authorization.authorize(responseData.token);
-        this.router.navigate(['/game']);
+        this.router.navigate(['/profile']);
       });
     }
   }

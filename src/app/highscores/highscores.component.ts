@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -9,28 +9,22 @@ import { Router } from '@angular/router';
 })
 export class HighscoresComponent implements OnInit {
 
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  };
+
   constructor(private http: HttpClient, private router: Router) {
-    if((typeof this.router.getCurrentNavigation().extras.state) != "undefined") { // used to supress error
-      this.token = this.router.getCurrentNavigation().extras.state.token;
-      this.highscores = this.router.getCurrentNavigation().extras.state.highscores;
-    }
-    else {
-      this.router.navigate(["/"]);
-    }
+    this.http.get<{ highscores: any }>('http://localhost:4201/highscore', this.httpOptions)
+    .subscribe((responseData) => {
+      this.highscores = responseData.highscores;
+    });
+    
   }
 
-  authenticated: boolean = false;
-  token: string = "";
   highscores = [];
 
   displayedColumns: string[] = ['username', 'score'];
   
-
   ngOnInit(): void {
   }
-
-  return() {
-    this.router.navigate(['/game'], { state: { token: this.token }});
-  }
-
 }
