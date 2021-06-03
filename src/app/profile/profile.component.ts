@@ -12,9 +12,11 @@ export class ProfileComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router, private authorization: AuthorizationService) {
     if(this.authorization.isAuthorized) {
-      this.http.post<{ username: string, score: string | number }>('http://localhost:4201/profile', { token: this.authorization.token }, this.httpOptions)
+      this.http.post<{ username: string, country: string, city: string, score: string | number }>('http://localhost:4201/profile', { token: this.authorization.token }, this.httpOptions)
       .subscribe((responseData) => {
         this.username = responseData.username;
+        this.country = responseData.country;
+        this.city = responseData.city;
         this.score =responseData.score;
       });
     }
@@ -28,6 +30,8 @@ export class ProfileComponent implements OnInit {
   };
 
   username: string = "";
+  country: string = "";
+  city: string = "";
   score: string | number = "";
 
   ngOnInit(): void {
