@@ -4,11 +4,8 @@ var randomToken = require('random-token');
 var db = {
 
     users: [
-        { username: "test@test.at", password: passwordHash.generate("12345678") },
-        { username: "linus@kernel.org", password: passwordHash.generate("abcdefg") },
-        { username: "steve@apple.com", password: passwordHash.generate("123456") },
-        { username: "bill@microsoft.com", password: passwordHash.generate("987654") },
-        { username: "a@a.a", password: passwordHash.generate("1") }
+        { username: "test@test.at", password: passwordHash.generate("12345678"), country: "Austria", city: "Vienna" },
+        { username: "a@a.a", password: passwordHash.generate("1"), country: "Germany", city: "Munich" }
     ],
     
     tokens: [],
@@ -19,12 +16,12 @@ var db = {
         { username: "bill@microsoft.com", score: 400 }
     ],
 
-    signup: function(username, password) {
+    signup: function(username, password, country, city) {
         let user = this.users.find(u => u.username === username);
         if(user !== undefined) {
             return false;
         }
-        this.users.push({ username: username, password: passwordHash.generate(password)});
+        this.users.push({ username: username, password: passwordHash.generate(password), country: country, city: city });
         return true;
     },
 
@@ -53,7 +50,11 @@ var db = {
 
     getAuthUser: function(authToken) {
         return this.tokens.find(auth => auth.token == authToken);
-    },    
+    },   
+
+    getUserInfo: function(username) {
+        return this.users.find(entry => entry.username == username);
+    }, 
 
     getHighscores: function() {
         return this.highscores.sort(function(a,b) { return b.score - a.score });

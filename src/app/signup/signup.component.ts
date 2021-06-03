@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Form, FormControl, NgForm, NgModel, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -19,7 +20,7 @@ export class SignupComponent implements OnInit {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -59,15 +60,23 @@ export class SignupComponent implements OnInit {
     }
   }
 
+  validateRequired(input: NgModel) {
+    let validator = new FormControl(input.value, [Validators.required]);
+    if(validator.hasError('required')) {
+      return 'You must enter a value!';
+    }
+  }
+
   onSubmit(form: NgForm) {
     form.value["company"] = this.company;
-    if((form.value.email == "" && form.value.password == "" && form.value.passwordconfirm == "") || this.errorEmail || this.errorPW) {
+    if(form.value.email == "" || form.value.password == "" || form.value.passwordconfirm == "" || form.value.country == "" || form.value.city == "" || this.errorEmail || this.errorPW) {
       alert('SignUp failed!');
     }
     else {
       this.http.post<{ message: string }>('http://localhost:4201/signup', form.value, this.httpOptions)
           .subscribe((responseData) => {
             console.log(responseData.message);
+            this.router.navigate(['/login']);
           });
     }
   }

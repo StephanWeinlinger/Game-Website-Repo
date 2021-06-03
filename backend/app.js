@@ -28,8 +28,8 @@ app.post('/login', (req, res, next) => {
 
 // POST route for signup
 app.post('/signup', (req, res, next) => {
-    const { email, password } = req.body;
-    if(db.signup(email, password)) {
+    const { email, password, country, city } = req.body;
+    if(db.signup(email, password, country, city)) {
         res.status(200).json({
             message: "SignUp worked!"
         })
@@ -64,6 +64,7 @@ app.post('/profile', (req, res, next) => {
     const { token } = req.body;
     if(db.isAuthenticated(token)) {
         const { username } = db.getAuthUser(token);
+        const { country, city } = db.getUserInfo(username);
         const scoreObject = db.getHighestScore(username);
         let score = "Not available!"
         if(scoreObject != undefined) {
@@ -71,6 +72,8 @@ app.post('/profile', (req, res, next) => {
         }
         res.status(200).json({
             username: username,
+            country: country,
+            city: city,
             score: score
         })
     }
