@@ -11,9 +11,9 @@ var db = {
     tokens: [],
     
     highscores: [ 
-        { username: "test@test.at", score: 1600 },
-        { username: "linus@kernel.org", score: 1900 },
-        { username: "bill@microsoft.com", score: 400 }
+        { username: "test@test.at", score: 50 },
+        { username: "linus@kernel.org", score: 80 },
+        { username: "bill@microsoft.com", score: 2 }
     ],
 
     signup: function(username, password, country, city) {
@@ -36,11 +36,10 @@ var db = {
             this.tokens.push(credentials);
             return credentials.token;
         } 
-
         return "";    
     },
 
-    deleteToken(authToken) {
+    deleteToken: function(authToken) {
         this.tokens = this.tokens.filter(e => e.token != authToken);
     },
 
@@ -58,6 +57,10 @@ var db = {
 
     getHighscores: function() {
         return this.highscores.sort(function(a,b) { return b.score - a.score });
+    },
+
+    removeHighscore: function(username) {
+        this.highscores = this.highscores.filter(entry => entry.username != username);
     },
 
     getHighestScore: function(username) {

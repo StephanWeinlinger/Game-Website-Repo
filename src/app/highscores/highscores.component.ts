@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -16,7 +16,7 @@ export class HighscoresComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) {
     this.http.get<{ highscores: any }>('http://localhost:4201/highscore', this.httpOptions)
     .subscribe((responseData) => {
-      this.highscores = responseData.highscores;
+      this.highscores = responseData.highscores.slice(0, 10);
     });
     
   }

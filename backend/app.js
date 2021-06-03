@@ -43,10 +43,19 @@ app.post('/highscore', (req, res, next) => {
     const { score, token } = req.body;
     if(db.isAuthenticated(token)) {
         const { username } = db.getAuthUser(token);
-        db.addHighscore(username, score);
-        res.status(200).json({
-            message: "Highscore inserted!"
-        });
+        const scoreObject = db.getHighestScore(username);
+        if(scoreObject == undefined || scoreObject.score < score) {
+            db.removeHighscore(username);
+            db.addHighscore(username, score);
+            res.status(200).json({
+                message: "Highscore inserted!"
+            });
+        }
+        else {
+            res.status(200).json({
+                message: "No new highscore achieved!"
+            });
+        }
     }
     else {
         res.status(401).json({});
