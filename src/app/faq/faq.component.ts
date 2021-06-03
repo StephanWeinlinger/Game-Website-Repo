@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class FaqComponent implements OnInit {
 
   constructor() { }
-
+  panelOpenState = false;
   ngOnInit(): void {
   }
 
