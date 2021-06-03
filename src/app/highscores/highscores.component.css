@@ -1,3 +1,10 @@
 table {
-    width: 100%;
-  }
+  width: 100%;
+}
+#highscore {
+  width: 80%;
+  margin: auto;
+}
+h1 {
+  text-align: center;
+}

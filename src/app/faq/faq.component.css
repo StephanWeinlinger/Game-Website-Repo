@@ -2,7 +2,8 @@
   margin-left: 8px;
 }
 .faqdiv {
-  margin: 50px;
+  width: 80%;
+  margin: auto;
 }
 #faqCaption {
   text-align: center;

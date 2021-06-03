@@ -1,4 +1,7 @@
-<button mat-button [matMenuTriggerFor]="menu"><h1>{{title}}</h1></button>
+<div id="Logodiv">
+    <button mat-button [matMenuTriggerFor]="menu"><img id="logo" src="assets/img/PuzzleBrosLogo.png"><h1>{{title}}</h1></button>
+</div>
+
 <mat-menu #menu="matMenu" #navbar>
     <a routerLink="/home"><button mat-menu-item>Home</button></a>
     <a routerLink="/game"><button mat-menu-item>Game</button></a>

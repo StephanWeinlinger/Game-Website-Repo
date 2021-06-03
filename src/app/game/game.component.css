@@ -18,9 +18,15 @@
 
 .card {
   height: 100px;
-	width: 100px;
+  width: 100px;
   float: left;
-	margin: 3px;
+  margin: 3px;
   border: solid 2px;
   border-color: white;
+}
+
+#gamefielddiv {
+  margin: auto;
+  width: 21%;
+  text-align: center;
 }
